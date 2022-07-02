@@ -40,6 +40,7 @@ import GHC.Check.Util (gcatchSafe, liftTyped)
 import qualified Language.Haskell.TH as TH
 import Language.Haskell.TH.Syntax.Compat (examineSplice, liftSplice, SpliceQ)
 import System.Directory (doesDirectoryExist, doesFileExist)
+import Debug.Trace
 
 #if USE_PACKAGE_ABIS
 import GHC (getSessionDynFlags, runGhc, setSessionDynFlags)
@@ -116,7 +117,7 @@ checkGhcVersion ::
   GhcVersionChecker
 checkGhcVersion compileTimeVersions runTimeLibdir = do
   let compileTimeVersionsMap = Map.fromList compileTimeVersions
-      compileTime = version $ compileTimeVersionsMap Map.! "ghc"
+      compileTime = version $ trace ("compileTimeVersionsMap: " <> show compileTimeVersionsMap) (compileTimeVersionsMap Map.! "ghc")
 
   exists <- doesDirectoryExist runTimeLibdir
 
